@@ -1,0 +1,4 @@
+Asset/MobFarm/AutoPool
+Yapımı bana ait değil
+Kullanım süresi 8ay
+Yaptığım projelerde object instantiate ederken hep bu kütüphaneyi kullanıyorum.
