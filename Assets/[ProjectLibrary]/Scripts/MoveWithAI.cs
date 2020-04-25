@@ -2,54 +2,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class MoveWithAI : MonoBehaviour
 {
+    public GameObject gameCanvas;
     public NavMeshAgent agent;
     public GameObject coolguy;
     private GameObject coolguyOnGame;
     private GameObject mainCamera;
+    private Animator animatorController;
+    private Button levelfinishScreen;
 
-    public GameObject Gamecanvas;
+    private bool isFinish = false;
 
     private Vector3 target;
 
     public NavMeshSurface surface;
-
+    
 
     void Start()
     {
         mainCamera = transform.Find("Main Camera").gameObject;
-
-        Gamecanvas.SetActive(false);
+        levelfinishScreen = gameCanvas.transform.Find("LevelFinishButton").GetComponent<Button>();
+        gameCanvas.SetActive(false);
 
         LevelBuilder.onCoolGuySpa += null;
-
         LevelBuilder.onCoolGuySpa += SpawnCoolGuy; 
-
         LevelBuilder.OnHoldEndPosforAI += MovewithAI;
-
-
+        CoolGuy.CollisionTypeSnd += null;
+        CoolGuy.CollisionTypeSnd += CollisionBehaviour;
     }
-    private void Update()
+
+
+    public void CollisionBehaviour(GameObject collisionObject)
     {
-        if (target != null && agent != null)
+        Debug.Log(collisionObject.gameObject.name);
+
+        if (collisionObject.gameObject.GetComponent<Platform>() != null)//Control on which platform
         {
-            Debug.Log("Target Destination : " + target);
-            agent.Move(target * Time.deltaTime/10);
+            if (collisionObject.gameObject.name.Contains("End"))
+            {
+                isFinish = true;
+                animatorController.SetFloat("vertical", 0);
+                gameCanvas.SetActive(true);
+                Debug.Log(collisionObject.gameObject.name);
+                levelfinishScreen.gameObject.SetActive(true);
+            }
         }
 
-        surface.BuildNavMesh();
+    }
 
+
+
+    private void Update()
+    {
+        if (target != null && agent != null && !isFinish)
+        {
+            agent.Move(target * Time.deltaTime / 10);
+            animatorController.SetFloat("vertical", 1);
+        }
+        surface.BuildNavMesh();
     }
 
 
     public void MovewithAI(Vector3 endposforAI)
     {
-        Debug.Log("Target Destination : " + endposforAI/10);
         target = endposforAI;
-
-        //agent.SetDestination(target);
     }
 
 
@@ -62,9 +81,8 @@ public class MoveWithAI : MonoBehaviour
         coolguyOnGame.transform.position = new Vector3(0, 5, 1);
         coolguyOnGame.transform.parent = transform;
         CameraControl();
-
+        animatorController = coolguyOnGame.GetComponent<Animator>();
         StartCoroutine("HoldNavAgent");
-
     }
     private void CameraControl()
     {
