@@ -47,7 +47,9 @@ public class MoveWithAI : MonoBehaviour
                 animatorController.SetFloat("vertical", 0);
                 gameCanvas.SetActive(true);
                 Debug.Log(collisionObject.gameObject.name);
+                mainCamera.transform.parent = this.transform;
                 levelfinishScreen.gameObject.SetActive(true);
+
             }
         }
 
@@ -83,6 +85,8 @@ public class MoveWithAI : MonoBehaviour
         CameraControl();
         animatorController = coolguyOnGame.GetComponent<Animator>();
         StartCoroutine("HoldNavAgent");
+
+        isFinish = false;
     }
     private void CameraControl()
     {
