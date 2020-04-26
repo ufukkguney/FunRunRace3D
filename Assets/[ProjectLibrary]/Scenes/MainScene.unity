@@ -914,9 +914,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 363c3068165a90e47acd932bcb60714d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameCanvas: {fileID: 447556888}
   agent: {fileID: 0}
   coolguy: {fileID: 9136746081422946020, guid: 49e04bfae400d9d42a87ce41ec075229, type: 3}
-  Gamecanvas: {fileID: 447556888}
   surface: {fileID: 216445856}
 --- !u!1 &1850620358
 GameObject:
